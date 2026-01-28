@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Input Data Siswa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Input Data Siswa</h1>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="siswa.html">Input Siswa</a>
+  <a href="ranking.html">Hasil Ranking</a>
+</nav>
+
+<div class="container card">
+  <h2>Masukkan Data Siswa</h2>
+
+  <input id="nama" placeholder="Nama Siswa">
+  <input id="c1" type="number" placeholder="Tes (C1)">
+  <input id="c2" type="number" placeholder="Mapel (C2)">
+  <input id="c3" type="number" placeholder="Pengalaman (C3)">
+  <input id="c4" type="number" placeholder="Raport (C4)">
+  <input id="c5" type="number" placeholder="Kelas (C5)">
+
+  <br><br>
+  <button onclick="tambahSiswa()">Tambah</button>
+  <button onclick="resetData()">Reset</button>
+
+  <h3>Daftar Siswa</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>C1</th>
+        <th>C2</th>
+        <th>C3</th>
+        <th>C4</th>
+        <th>C5</th>
+      </tr>
+    </thead>
+    <tbody id="tabelSiswa"></tbody>
+  </table>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
