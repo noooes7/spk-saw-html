@@ -15,19 +15,18 @@
 <nav>
   <a href="index.html">Home</a>
   <a href="siswa.html">Input Siswa</a>
-  <a href="ranking.html">Hasil Ranking</a>
+  <a href="ranking.html">Ranking SAW</a>
 </nav>
 
 <div class="container card">
   <h2>Selamat Datang</h2>
   <p>
-    Website ini adalah Sistem Pendukung Keputusan (SPK) untuk memilih siswa
-    berprestasi sebagai peserta Olimpiade Sains menggunakan metode SAW.
+    Website ini digunakan untuk memilih siswa berprestasi sebagai peserta Olimpiade Sains
+    menggunakan metode SAW.
   </p>
-
   <p>
-    Silakan masuk ke menu <b>Input Siswa</b> untuk memasukkan data,
-    lalu lihat hasilnya pada menu <b>Ranking</b>.
+    Silakan input data siswa pada menu <b>Input Siswa</b> lalu lihat hasil ranking di menu
+    <b>Ranking SAW</b>.
   </p>
 </div>
 
