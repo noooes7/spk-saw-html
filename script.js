@@ -1,50 +1,67 @@
 let siswa = JSON.parse(localStorage.getItem("siswa")) || [];
 
-// Tampilkan tabel otomatis
+// tampil tabel siswa ringkas
 function tampilkanTabel() {
   let tabel = document.getElementById("tabelSiswa");
   if (!tabel) return;
 
   tabel.innerHTML = "";
+
   siswa.forEach(s => {
     tabel.innerHTML += `
       <tr>
+        <td>${s.nim}</td>
         <td>${s.nama}</td>
-        <td>${s.nilai[0]}</td>
-        <td>${s.nilai[1]}</td>
-        <td>${s.nilai[2]}</td>
-        <td>${s.nilai[3]}</td>
-        <td>${s.nilai[4]}</td>
+        <td>${s.kelas}</td>
+        <td>${s.email}</td>
       </tr>
     `;
   });
 }
 
-// Tambah siswa
+// tambah siswa lengkap
 function tambahSiswa() {
-  let nama = document.getElementById("nama").value;
-  let nilai = [
-    parseFloat(document.getElementById("c1").value),
-    parseFloat(document.getElementById("c2").value),
-    parseFloat(document.getElementById("c3").value),
-    parseFloat(document.getElementById("c4").value),
-    parseFloat(document.getElementById("c5").value)
-  ];
+  let data = {
+    nim: document.getElementById("nim").value,
+    nama: document.getElementById("nama").value,
+    username: document.getElementById("username").value,
+    password: document.getElementById("password").value,
+    kelas: document.getElementById("kelas").value,
+    alamat: document.getElementById("alamat").value,
+    ttl: document.getElementById("ttl").value,
+    jk: document.getElementById("jk").value,
+    agama: document.getElementById("agama").value,
+    namaAyah: document.getElementById("namaAyah").value,
+    namaIbu: document.getElementById("namaIbu").value,
+    tahunMasuk: document.getElementById("tahunMasuk").value,
+    email: document.getElementById("email").value,
+    hp: document.getElementById("hp").value,
 
-  siswa.push({ nama, nilai });
+    nilai: [
+      parseFloat(document.getElementById("c1").value),
+      parseFloat(document.getElementById("c2").value),
+      parseFloat(document.getElementById("c3").value),
+      parseFloat(document.getElementById("c4").value),
+      parseFloat(document.getElementById("c5").value)
+    ]
+  };
+
+  siswa.push(data);
   localStorage.setItem("siswa", JSON.stringify(siswa));
 
   tampilkanTabel();
+  alert("Data siswa berhasil ditambahkan!");
 }
 
-// Reset data
+// reset semua
 function resetData() {
   siswa = [];
   localStorage.removeItem("siswa");
   tampilkanTabel();
+  document.getElementById("outputRanking").innerHTML = "";
 }
 
-// Hitung SAW Ranking
+// hitung ranking SAW
 function hitungSAW() {
   let bobot = [10, 8, 6, 2, 4];
 
@@ -66,7 +83,7 @@ function hitungSAW() {
   hasil.sort((a, b) => b.skor - a.skor);
 
   let output = `
-    <h3>Ranking Siswa</h3>
+    <h3>Hasil Ranking</h3>
     <table>
       <tr><th>Rank</th><th>Nama</th><th>Skor</th></tr>
   `;
@@ -86,5 +103,4 @@ function hitungSAW() {
   document.getElementById("outputRanking").innerHTML = output;
 }
 
-// Jalankan saat halaman dibuka
 document.addEventListener("DOMContentLoaded", tampilkanTabel);
