@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPK Pemilihan Siswa Berprestasi - SAW</title>
+  <title>SPK Pemilihan Siswa Berprestasi - Metode SAW</title>
 
   <style>
     body {
@@ -15,22 +15,8 @@
     header {
       background: #1e3c72;
       color: white;
-      padding: 20px;
+      padding: 25px;
       text-align: center;
-    }
-
-    nav {
-      background: white;
-      padding: 10px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    nav a {
-      margin: 10px;
-      text-decoration: none;
-      color: #1e3c72;
-      font-weight: bold;
     }
 
     .container {
@@ -44,13 +30,19 @@
       padding: 20px;
       margin-bottom: 20px;
       border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+      color: #1e3c72;
     }
 
     input {
       padding: 8px;
       margin: 5px;
-      width: 140px;
+      width: 150px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
 
     button {
@@ -60,6 +52,7 @@
       color: white;
       cursor: pointer;
       border-radius: 8px;
+      margin-top: 10px;
     }
 
     button:hover {
@@ -87,6 +80,11 @@
       font-weight: bold;
       color: green;
     }
+
+    .warning {
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -94,21 +92,23 @@
 
 <header>
   <h1>SPK Pemilihan Siswa Berprestasi</h1>
-  <p>Menggunakan Metode Simple Additive Weighting (SAW)</p>
+  <p>Metode Simple Additive Weighting (SAW)</p>
 </header>
-
-<nav>
-  <a href="#input">Input Data</a>
-  <a href="#ranking">Hasil Ranking</a>
-</nav>
 
 <div class="container">
 
   <!-- INPUT DATA -->
-  <div class="card" id="input">
+  <div class="card">
     <h2>Input Data Siswa</h2>
     <p>Masukkan nilai berdasarkan kriteria:</p>
-    <p><b>C1:</b> Tes | <b>C2:</b> Nilai Mapel | <b>C3:</b> Pengalaman | <b>C4:</b> Raport | <b>C5:</b> Kelas</p>
+
+    <ul>
+      <li><b>C1</b> = Tes</li>
+      <li><b>C2</b> = Nilai Mata Pelajaran</li>
+      <li><b>C3</b> = Pengalaman Olimpiade</li>
+      <li><b>C4</b> = Nilai Raport</li>
+      <li><b>C5</b> = Tingkat Kelas</li>
+    </ul>
 
     <input id="nama" placeholder="Nama Siswa">
     <input id="c1" type="number" placeholder="C1">
@@ -117,8 +117,11 @@
     <input id="c4" type="number" placeholder="C4">
     <input id="c5" type="number" placeholder="C5">
 
-    <br><br>
+    <br>
     <button onclick="tambahSiswa()">Tambah Siswa</button>
+    <button onclick="resetData()">Reset Data</button>
+
+    <p id="pesan" class="warning"></p>
 
     <h3>Daftar Siswa</h3>
     <table>
@@ -136,11 +139,12 @@
     </table>
   </div>
 
-  <!-- RANKING -->
-  <div class="card" id="ranking">
-    <h2>Proses SAW & Ranking</h2>
-    <p>Bobot kriteria sesuai artikel:</p>
-    <p><b>W = [10, 8, 6, 2, 4]</b></p>
+  <!-- PROSES SAW -->
+  <div class="card">
+    <h2>Proses Perhitungan SAW</h2>
+
+    <p><b>Bobot Kriteria:</b></p>
+    <p>W = [10, 8, 6, 2, 4]</p>
 
     <button onclick="hitungSAW()">Hitung Ranking</button>
 
@@ -152,14 +156,23 @@
 <script>
   let siswa = [];
 
+  // Tambah siswa
   function tambahSiswa() {
     let nama = document.getElementById("nama").value;
-
     let c1 = parseFloat(document.getElementById("c1").value);
     let c2 = parseFloat(document.getElementById("c2").value);
     let c3 = parseFloat(document.getElementById("c3").value);
     let c4 = parseFloat(document.getElementById("c4").value);
     let c5 = parseFloat(document.getElementById("c5").value);
+
+    // Validasi input
+    if (!nama || isNaN(c1) || isNaN(c2) || isNaN(c3) || isNaN(c4) || isNaN(c5)) {
+      document.getElementById("pesan").innerText =
+        "⚠️ Semua data harus diisi dengan benar!";
+      return;
+    }
+
+    document.getElementById("pesan").innerText = "";
 
     siswa.push({
       nama: nama,
@@ -167,8 +180,17 @@
     });
 
     tampilkanTabel();
+
+    // Reset input
+    document.getElementById("nama").value = "";
+    document.getElementById("c1").value = "";
+    document.getElementById("c2").value = "";
+    document.getElementById("c3").value = "";
+    document.getElementById("c4").value = "";
+    document.getElementById("c5").value = "";
   }
 
+  // Tampilkan data siswa
   function tampilkanTabel() {
     let tabel = document.getElementById("tabelSiswa");
     tabel.innerHTML = "";
@@ -187,10 +209,23 @@
     });
   }
 
+  // Reset semua data
+  function resetData() {
+    siswa = [];
+    tampilkanTabel();
+    document.getElementById("outputRanking").innerHTML = "";
+  }
+
+  // Hitung metode SAW
   function hitungSAW() {
+    if (siswa.length === 0) {
+      alert("Masukkan data siswa terlebih dahulu!");
+      return;
+    }
+
     let bobot = [10, 8, 6, 2, 4];
 
-    // Cari max tiap kriteria
+    // Cari nilai maksimum tiap kriteria
     let max = [0, 0, 0, 0, 0];
     siswa.forEach(s => {
       s.nilai.forEach((val, i) => {
@@ -198,24 +233,33 @@
       });
     });
 
-    // Hitung skor
+    // Hitung skor akhir
     let hasil = siswa.map(s => {
       let skor = 0;
+
       s.nilai.forEach((val, i) => {
         let normal = val / max[i];
         skor += normal * bobot[i];
       });
-      return { nama: s.nama, skor: skor };
+
+      return {
+        nama: s.nama,
+        skor: skor
+      };
     });
 
     // Urut ranking
     hasil.sort((a, b) => b.skor - a.skor);
 
-    // Tampilkan hasil
+    // Tampilkan ranking
     let html = `
       <h3>Hasil Ranking SAW</h3>
       <table>
-        <tr><th>Rank</th><th>Nama</th><th>Skor</th></tr>
+        <tr>
+          <th>Rank</th>
+          <th>Nama</th>
+          <th>Skor</th>
+        </tr>
     `;
 
     hasil.forEach((r, i) => {
